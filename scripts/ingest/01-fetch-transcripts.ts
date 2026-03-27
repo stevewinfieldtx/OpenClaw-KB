@@ -142,9 +142,9 @@ async function main() {
       failed++;
     }
 
-    // Rate limit
+    // Rate limit — 3s between requests to avoid YouTube 429s
     if (i < urls.length - 1) {
-      await new Promise((r) => setTimeout(r, 1000));
+      await new Promise((r) => setTimeout(r, 3000));
     }
   }
 

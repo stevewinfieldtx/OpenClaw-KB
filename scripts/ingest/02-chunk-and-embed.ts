@@ -60,10 +60,14 @@ function chunkText(
 
 async function embedBatch(texts: string[]): Promise<number[][]> {
   const response = await openai.embeddings.create({
-    model: "openai/text-embedding-3-small",
+    model: "perplexity/pplx-embed-v1-4b",
     input: texts,
   });
-  return response.data.map((d) => d.embedding);
+  // OpenRouter returns data array; handle both standard and wrapped responses
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const raw = response as any;
+  const items: { embedding: number[] }[] = raw.data ?? raw;
+  return items.map((d) => d.embedding);
 }
 
 async function main() {

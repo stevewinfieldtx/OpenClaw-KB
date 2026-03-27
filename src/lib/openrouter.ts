@@ -7,7 +7,7 @@ const client = new OpenAI({
 
 export async function embed(texts: string[]): Promise<number[][]> {
   const response = await client.embeddings.create({
-    model: "openai/text-embedding-3-small",
+    model: "perplexity/pplx-embed-v1-4b",
     input: texts,
   });
   return response.data.map((d) => d.embedding);

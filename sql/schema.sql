@@ -16,12 +16,12 @@ CREATE TABLE IF NOT EXISTS chunks (
   chunk_index INTEGER NOT NULL,
   content TEXT NOT NULL,
   token_count INTEGER,
-  embedding vector(1536) NOT NULL,
+  embedding vector(2560) NOT NULL,
   search_vector tsvector GENERATED ALWAYS AS (to_tsvector('english', content)) STORED,
   UNIQUE(video_id, chunk_index)
 );
 
-CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100);
+-- Note: perplexity/pplx-embed-v1-4b = 2560 dims, exceeds pgvector index limit; exact search used instead
 CREATE INDEX IF NOT EXISTS idx_chunks_search ON chunks USING gin (search_vector);
 
 CREATE TABLE IF NOT EXISTS best_practices (
